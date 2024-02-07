@@ -7,6 +7,7 @@ import pickle
 # Header
 st.header("Kenya Tourism Expenditure Prediction")
 st.subheader("A simple machine learning app to predict how much money a tourist will spend when visiting Kenya.")
+st.image("V:\\my project\\app\\images (1).jpg")
 
 # Form
 my_form = st.form(key="financial_form")
