@@ -118,7 +118,7 @@ submit = my_form.form_submit_button(label="Make Prediction")
 # Load the model
 #@st.cache(allow_output_mutation=True)
 def load_model():
-    with open(join(dirname(realpath(__file__)), "model/kenya_tourism_data.pkl""), "rb") as f:
+    with open(join(dirname(realpath(__file__)), model/kenya_tourism_data.pkl), "rb") as f:
         model = pickle.load(f)
     return model
 
