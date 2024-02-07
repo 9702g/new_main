@@ -135,9 +135,34 @@ if submit:
         "first_trip_kenya": first_trip_kenya
     }
     # Create a DataFrame from the input data
+  # import streamlit as st
+#import pandas as pd
+#import pickle
+
+# Load the trained XGBoost model
+#with open('xgboost_model.pkl', 'rb') as f:
+  #  model = pickle.load(f)
+
+# Function to perform prediction
+def predict_total_cost(input_data):
+    # Create a DataFrame with the input data
     data = pd.DataFrame(input_data, index=[0])
     # Perform prediction
     prediction = model.predict(data)
-    # Display results of the Tourism prediction
-    st.header("Results")
-    st.write(" You are expected to spend: {}".format(prediction))
+    return prediction
+
+# Example usage
+input_data = {
+    'total_female': 3,
+    'total_male': 2,
+    'nights_spent': 4,
+    'travel_with': 'Family',
+    'most_impressing': 'Wildlife'
+}
+
+# Perform prediction
+prediction = predict_total_cost(input_data)
+
+# Display results of the Tourism prediction
+st.header("Results")
+st.write(" You are expected to spend: {}".format(prediction))
