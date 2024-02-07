@@ -1,72 +1,131 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from xgboost import XGBRegressor
-from sklearn import metrics
+import numpy as np
 import os 
+import pickle
 
-# Load the data
-data = pd.read_csv('V:\\my project\\app\\Clean_Kenya_Tourism_datasets (2).csv')
+# Load the model
+absolute_path = "V:\\my project\\kenya_tourism_data.pkl"  # Absolute path to the pickled file
 
-# Data Preprocessing
-data['travel_with'] = data['travel_with'].replace(np.nan, 'Alone')
-data['total_female'] = data['total_female'].replace(np.nan, 1.0)
-data['total_male'] = data['total_male'].replace(np.nan, 1.0)
-data['most_impressing'] = data['most_impressing'].replace(np.nan, 'No comments')
-data['age_group'] = data['age_group'].replace('24-Jan', '1-24')
+# Check if the file exists
+if os.path.exists(absolute_path):
+    # Open the file and unpickle the model
+    with open(absolute_path, "rb") as f:
+        model = pickle.load(f)
+else:
+    st.error("Model file not found at the specified location.")
 
-# Convert float columns to integer
-data["total_female"] = data['total_female'].astype('int')
-data["total_male"] = data['total_male'].astype('int')
-data["nights_spent"] = data['nights_spent'].astype('int')
+# Function to perform prediction
+def predict_total_cost(input_data, model):
+    # Create a DataFrame with the input data
+    data = pd.DataFrame(input_data, index=[0])
+    # Perform prediction
+    prediction = model.predict(data)
+    return prediction
 
-# Generate new features
-data["total_people"] = data["total_female"] + data["total_male"]
-data["total_nights"] = data["nights_spent"]
+# Header
+st.header("Kenya Tourism Expenditure Prediction")
+st.subheader("A simple machine learning app to predict how much money a tourist will spend when visiting Kenya.")
 
-# Encode categorical features
-for colname in data.select_dtypes("object"):
-    data[colname], _ = data[colname].factorize()
+# Form
+my_form = st.form(key="financial_form")
 
-# Model Building
-x = data.drop(['total_cost'], axis=1)
-y = data['total_cost']
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=2)
+# Selectbox for country
+country = my_form.selectbox("Select country", [
+    "SWITZERLAND", "UNITED KINGDOM", "CHINA", "SOUTH AFRICA", "UNITED STATES OF AMERICA",
+    "NIGERIA", "INDIA", "BRAZIL", "CANADA", "MALTA", "MOZAMBIQUE", "RWANDA", "AUSTRIA",
+    "MYANMAR", "GERMANY", "KENYA", "ALGERIA", "IRELAND", "DENMARK", "SPAIN", "FRANCE",
+    "ITALY", "EGYPT", "QATAR", "MALAWI", "JAPAN", "SWEDEN", "NETHERLANDS", "UAE", "UGANDA",
+    "AUSTRALIA", "YEMEN", "NEW ZEALAND", "BELGIUM", "NORWAY", "ZIMBABWE", "ZAMBIA", "CONGO",
+    "BULGARIA", "PAKISTAN", "GREECE", "MAURITIUS", "DRC", "OMAN", "PORTUGAL", "KOREA",
+    "SWAZILAND", "TUNISIA", "KUWAIT", "DOMINICA", "ISRAEL", "FINLAND", "CZECH REPUBLIC",
+    "UKRAINE", "ETHIOPIA", "BURUNDI", "SCOTLAND", "RUSSIA", "GHANA", "NIGER", "MALAYSIA",
+    "COLOMBIA", "LUXEMBOURG", "NEPAL", "POLAND", "SINGAPORE", "LITHUANIA", "HUNGARY",
+    "INDONESIA", "TURKEY", "TRINIDAD AND TOBAGO", "IRAQ", "SLOVENIA", "UNITED ARAB EMIRATES",
+    "COMORO", "SRI LANKA", "IRAN", "MONTENEGRO", "ANGOLA", "LEBANON", "SLOVAKIA", "ROMANIA",
+    "MEXICO", "LATVIA", "CROATIA", "CAPE VERDE", "SUDAN", "COSTA RICA", "CHILE", "NAMIBIA",
+    "TAIWAN", "SERBIA", "LESOTHO", "GEORGIA", "PHILIPPINES", "IVORY COAST", "MADAGASCAR",
+    "DJIBOUTI", "CYPRUS", "ARGENTINA", "URUGUAY", "MOROCCO", "THAILAND", "BERMUDA", "ESTONIA",
+    "BOTSWANA", "VIETNAM", "GUINEA", "MACEDONIA", "HAITI", "LIBERIA", "SAUDI ARABIA", "BOSNIA",
+    "BULGARIA", "PERU", "BANGLADESH", "JAMAICA", "SOMALIA"
+])
 
-# Train the XGBoost model
-model = XGBRegressor()
-model.fit(X=x_train, y=y_train)
+# Selectbox for age group
+age_group = my_form.selectbox("Select your age range", ["1-24", "25-44", "45-64", "65+"])
 
-# Create a Streamlit app
-st.title('Kenya Tourism Prediction App')
+# Selectbox for travel with
+travel_with = my_form.selectbox("Who do you plan to travel with?", ["Friends/Relatives", "Alone", "Spouse", "Children", "Spouse and Children"])
 
-# Add a sidebar for user input
-st.sidebar.header('User Input Features')
+# Selectbox for purpose
+purpose = my_form.selectbox("What is the purpose of visiting Kenya?", [
+    "Leisure and Holidays", "Visiting Friends and Relatives", "Business", 
+    "Meetings and Conference", "Volunteering", "Scientific and Academic", "Other"
+])
 
-# Function to get user input
-def get_user_input():
-    total_female = st.sidebar.slider('Total Female', int(data['total_female'].min()), int(data['total_female'].max()), int(data['total_female'].mean()))
-    total_male = st.sidebar.slider('Total Male', int(data['total_male'].min()), int(data['total_male'].max()), int(data['total_male'].mean()))
-    nights_spent = st.sidebar.slider('Nights Spent', int(data['nights_spent'].min()), int(data['nights_spent'].max()), int(data['nights_spent'].mean()))
-    travel_with = st.sidebar.selectbox('Travel With', data['travel_with'].unique())
-    most_impressing = st.sidebar.selectbox('Most Impressing', data['most_impressing'].unique())
-    age_group = st.sidebar.selectbox('Age Group', data['age_group'].unique())
-    features = {'total_female': total_female,
-                'total_male': total_male,
-                'nights_spent': nights_spent,
-                'travel_with': travel_with,
-                'most_impressing': most_impressing,
-                'age_group': age_group}
-    return pd.DataFrame(features, index=[0])
+# Number input for total number of people
+total_number = my_form.number_input("How many people are you traveling with in Kenya?", min_value=1)
 
-# Get user input
-user_input = get_user_input()
+# Selectbox for main activity
+main_activity = my_form.selectbox("What is the main activity you want to do in Kenya?", [
+    "Wildlife tourism", "Cultural tourism", "Mountain climbing", "Beach tourism", 
+    "Conference tourism", "Hunting tourism",
 
-# Perform prediction
-prediction = model.predict(user_input)
+    "Bird watching", "Business", 
+    "Diving and Sport Fishing"
+])
 
-# Display results
-st.header("Results")
-st.write("You are expected to spend: {}".format(prediction))
+# Selectbox for tour arrangement
+tour_arrangement = my_form.selectbox("How do you arrange your tour?", ["Independent", "Package Tour"])
 
+# Selectbox for package_transport_int
+package_transport_int = my_form.selectbox("Does the package tour include International Transportation?", [0, 1], format_func=func)
+
+# Selectbox for package_accommodation
+package_accommodation = my_form.selectbox("Does the package tour include Accommodation service?", [0, 1], format_func=func)
+
+# Selectbox for package_food
+package_food = my_form.selectbox("Does the package tour include Food service?", [0, 1], format_func=func)
+
+# Selectbox for package_transport_int
+package_transport_int = my_form.selectbox("Does the package tour include Local Transportation when you are in Kenya?", [0, 1], format_func=func)
+
+# Selectbox for package_sightseeing
+package_sightseeing = my_form.selectbox("Does the package tour include Sight Seeing service?", [0, 1], format_func=func)
+
+# Selectbox for package_guided_tour
+package_guided_tour = my_form.selectbox("Does the package tour include Tour guiding service?", [0, 1], format_func=func)
+
+# Selectbox for package_insurance
+package_insurance = my_form.selectbox("Does the package tour include Insurance?", [0, 1], format_func=func)
+
+# Selectbox for payment_mode
+payment_mode = my_form.selectbox("What is your payment mode for tourism service?", ["Cash", "Credit Card", "Other", "Travellers Cheque"])
+
+# Selectbox for first_trip_kenya
+first_trip_kenya = my_form.selectbox("Is this your first trip to Kenya?", [0, 1], format_func=func)
+
+# Number input for nights_stayed
+nights_stayed = my_form.number_input("How many days do you plan to spend in Kenya Mainland?", min_value=0)
+
+# Form submit button
+submit = my_form.form_submit_button(label="Make Prediction")
+
+# If form submitted
+if submit:
+    # Create a dictionary with user input
+    input_data = {
+        "country": country, "age_group": age_group, "travel_with": travel_with,
+        "total_number": total_number, "purpose": purpose, "main_activity": main_activity,
+        "tour_arrangement": tour_arrangement, "package_transport_int": package_accommodation,
+        "package_accommodation": package_accommodation, "package_food": package_food,
+        "package_transport_int": package_transport_int, "package_sightseeing": package_sightseeing,
+        "package_guided_tour": package_guided_tour, "package_insurance": package_insurance,
+        "nights_stayed": nights_stayed, "payment_mode": payment_mode,
+        "first_trip_kenya": first_trip_kenya
+    }
+    # Perform prediction
+    prediction = predict_total_cost(input_data, model)
+    
+    # Display result
+    st.header("Results")
+    st.write("You are expected to spend: ${:.2f}".format(prediction[0]))
