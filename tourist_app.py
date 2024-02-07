@@ -113,7 +113,7 @@ if os.path.exists(absolute_path):
     # Open the file and unpickle the data
     with open(absolute_path, "rb") as f:
         model = pickle.load(f)
-    return model
+    
     # Load the model
 
 
