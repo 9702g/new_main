@@ -115,7 +115,7 @@ if os.path.exists(absolute_path):
         model = pickle.load(f)
     return model
     # Load the model
-model = load_model()
+
 
         #print("Data unpickled successfully.")
         # Use the unpickled data as needed
