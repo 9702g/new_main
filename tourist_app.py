@@ -1,8 +1,7 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
-from os.path import dirname, join, realpath
+import os 
 import pickle
 
 # Header
@@ -100,34 +99,31 @@ nights_stayed = my_form.number_input("How many days do you plan to spend in Keny
 # Form submit button
 submit = my_form.form_submit_button(label="Make Prediction")
 
-# Load the model
-#absolute_path = "V:\\my project\\kenya_tourism_data.pkl"  # Absolute path to the pickled file
+# Load the model and one-hot-encoder and scaler
+#import pickle
+#from os.path import dirname, join, realpath
+
+
+
+# Define the absolute path to the file
+absolute_path = "V:\\my project\\kenya_tourism_data.pkl"  # Use forward slashes for Windows paths
 
 # Check if the file exists
-#if os.path.exists(absolute_path):
-    # Open the file and unpickle the model
- #   with open
-
-#(absolute_path, "rb") as f:
-#        model = pickle.load(f)
-#else:
-  #  st.error("Model file not found at the specified location.")
-
-
-
-# Load the model
-#@st.cache(allow_output_mutation=True)
-def load_model():
-    with open(join(dirname(realpath(__file__)), model/kenya_tourism_data.pkl), "rb") as f:
+if os.path.exists(absolute_path):
+    # Open the file and unpickle the data
+    with open(absolute_path, "rb") as f:
         model = pickle.load(f)
     return model
-
-# Load the model
+    # Load the model
 model = load_model()
 
-# Now you can use the model for predictions
-# For example:
-# prediction = model.predict(data)
+        #print("Data unpickled successfully.")
+        # Use the unpickled data as needed
+       # print(data)
+else:
+    print("File not found:", absolute_path)
+
+
 
 # If form submitted
 if submit:
@@ -144,10 +140,8 @@ if submit:
     }
     # Create a DataFrame from the input data
     data = pd.DataFrame(input_data, index=[0])
-    
     # Perform prediction
     prediction = model.predict(data)
-    
-    # Display result
+    # Display results of the Tourism prediction
     st.header("Results")
-    st.write("You are expected to spend: ${:.2f}".format(prediction[0]))
+    st.write(" You are expected to spend: {}".format(prediction))
