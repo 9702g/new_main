@@ -112,7 +112,7 @@ absolute_path = "V:\\my project\\kenya_tourism_data.pkl"  # Use forward slashes 
 if os.path.exists(absolute_path):
     # Open the file and unpickle the data
     with open(absolute_path, "rb") as f:
-        data = pickle.load(f)
+        model = pickle.load(f)
         #print("Data unpickled successfully.")
         # Use the unpickled data as needed
        # print(data)
