@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import os 
 import pickle
 
 # Header
@@ -99,8 +100,26 @@ nights_stayed = my_form.number_input("How many days do you plan to spend in Keny
 submit = my_form.form_submit_button(label="Make Prediction")
 
 # Load the model and one-hot-encoder and scaler
-with open('kenya_tourism_data.pkl', 'rb') as f:
-    model = pickle.load(f)
+#import pickle
+#from os.path import dirname, join, realpath
+
+
+
+# Define the absolute path to the file
+absolute_path = "V:\\my project\\kenya_tourism_data.pkl"  # Use forward slashes for Windows paths
+
+# Check if the file exists
+if os.path.exists(absolute_path):
+    # Open the file and unpickle the data
+    with open(absolute_path, "rb") as f:
+        data = pickle.load(f)
+        #print("Data unpickled successfully.")
+        # Use the unpickled data as needed
+       # print(data)
+else:
+    print("File not found:", absolute_path)
+
+
 
 # If form submitted
 if submit:
