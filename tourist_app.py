@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import os
+from os.path import dirname, join, realpath
 import pickle
 
 # Header
@@ -101,17 +101,33 @@ nights_stayed = my_form.number_input("How many days do you plan to spend in Keny
 submit = my_form.form_submit_button(label="Make Prediction")
 
 # Load the model
-absolute_path = "V:\\my project\\kenya_tourism_data.pkl"  # Absolute path to the pickled file
+#absolute_path = "V:\\my project\\kenya_tourism_data.pkl"  # Absolute path to the pickled file
 
 # Check if the file exists
-if os.path.exists(absolute_path):
+#if os.path.exists(absolute_path):
     # Open the file and unpickle the model
-    with open
+ #   with open
 
-(absolute_path, "rb") as f:
+#(absolute_path, "rb") as f:
+#        model = pickle.load(f)
+#else:
+  #  st.error("Model file not found at the specified location.")
+
+
+
+# Load the model
+#@st.cache(allow_output_mutation=True)
+def load_model():
+    with open(join(dirname(realpath(__file__)), "model/kenya_tourism_data.pkl""), "rb") as f:
         model = pickle.load(f)
-else:
-    st.error("Model file not found at the specified location.")
+    return model
+
+# Load the model
+model = load_model()
+
+# Now you can use the model for predictions
+# For example:
+# prediction = model.predict(data)
 
 # If form submitted
 if submit:
