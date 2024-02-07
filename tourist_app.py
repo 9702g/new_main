@@ -92,7 +92,7 @@ package_insurance = my_form.selectbox("Does the package tour include Insurance?"
 payment_mode = my_form.selectbox("What is your payment mode for tourism service?", ["Cash", "Credit Card", "Other", "Travellers Cheque"])
 
 # Selectbox for first_trip_kenya
-first_trip_kenya = my_form.selectbox("Is this your first trip to Kenya?", [0, 1], format_func=func)
+first_trip = my_form.selectbox("Is this your first trip to Kenya?", [0, 1], format_func=func)
 
 # Number input for nights_stayed
 nights_stayed = my_form.number_input("How many days do you plan to spend in Kenya Mainland?", min_value=0)
@@ -137,7 +137,7 @@ if submit:
         "package_transport_int": package_transport_int, "package_sightseeing": package_sightseeing,
         "package_guided_tour": package_guided_tour, "package_insurance": package_insurance,
         "nights_stayed": nights_stayed, "payment_mode": payment_mode,
-        "first_trip_kenya": first_trip_kenya
+        "first_trip": first_trip
     }
     # Create a DataFrame from the input data
     data = pd.DataFrame(input_data, index=[0])
