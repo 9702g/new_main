@@ -99,7 +99,7 @@ nights_stayed = my_form.number_input("How many days do you plan to spend in Keny
 submit = my_form.form_submit_button(label="Make Prediction")
 
 # Load the model and one-hot-encoder and scaler
-with open('tourism_data.pkl', 'rb') as f:
+with open('kenya_tourism_data.pkl', 'rb') as f:
     model = pickle.load(f)
 
 # If form submitted
