@@ -20,22 +20,22 @@ def func(value):
 
 # Selectbox for country
 country = my_form.selectbox("Select country", [
-    "SWIZERLAND", "UNITED KINGDOM", "CHINA", "SOUTH AFRICA", "UNITED STATES OF AMERICA",
-    "NIGERIA", "INDIA", "BRAZIL", "CANADA", "MALT", "MOZAMBIQUE", "RWANDA", "AUSTRIA",
+    "SWITZERLAND", "UNITED KINGDOM", "CHINA", "SOUTH AFRICA", "UNITED STATES OF AMERICA",
+    "NIGERIA", "INDIA", "BRAZIL", "CANADA", "MALTA", "MOZAMBIQUE", "RWANDA", "AUSTRIA",
     "MYANMAR", "GERMANY", "KENYA", "ALGERIA", "IRELAND", "DENMARK", "SPAIN", "FRANCE",
     "ITALY", "EGYPT", "QATAR", "MALAWI", "JAPAN", "SWEDEN", "NETHERLANDS", "UAE", "UGANDA",
     "AUSTRALIA", "YEMEN", "NEW ZEALAND", "BELGIUM", "NORWAY", "ZIMBABWE", "ZAMBIA", "CONGO",
-    "BURGARIA", "PAKISTAN", "GREECE", "MAURITIUS", "DRC", "OMAN", "PORTUGAL", "KOREA",
+    "BULGARIA", "PAKISTAN", "GREECE", "MAURITIUS", "DRC", "OMAN", "PORTUGAL", "KOREA",
     "SWAZILAND", "TUNISIA", "KUWAIT", "DOMINICA", "ISRAEL", "FINLAND", "CZECH REPUBLIC",
-    "UKRAIN", "ETHIOPIA", "BURUNDI", "SCOTLAND", "RUSSIA", "GHANA", "NIGER", "MALAYSIA",
+    "UKRAINE", "ETHIOPIA", "BURUNDI", "SCOTLAND", "RUSSIA", "GHANA", "NIGER", "MALAYSIA",
     "COLOMBIA", "LUXEMBOURG", "NEPAL", "POLAND", "SINGAPORE", "LITHUANIA", "HUNGARY",
-    "INDONESIA", "TURKEY", "TRINIDAD TOBACCO", "IRAQ", "SLOVENIA", "UNITED ARAB EMIRATES",
+    "INDONESIA", "TURKEY", "TRINIDAD AND TOBAGO", "IRAQ", "SLOVENIA", "UNITED ARAB EMIRATES",
     "COMORO", "SRI LANKA", "IRAN", "MONTENEGRO", "ANGOLA", "LEBANON", "SLOVAKIA", "ROMANIA",
-    "MEXICO", "LATVIA", "CROATIA", "CAPE VERDE", "SUDAN", "COSTARICA", "CHILE", "NAMIBIA",
-    "TAIWAN", "SERBIA", "LESOTHO", "GEORGIA", "PHILIPINES", "IVORY COAST", "MADAGASCAR",
-    "DJIBOUT", "CYPRUS", "ARGENTINA", "URUGUAY", "MORROCO", "THAILAND", "BERMUDA", "ESTONIA",
-    "BOTSWANA", "VIETNAM", "GUINEA", "MACEDONIA", "HAITI", "LIBERIA", "SAUD ARABIA", "BOSNIA",
-    "BULGARIA", "PERU", "BANGLADESH", "JAMAICA", "SOMALI"
+    "MEXICO", "LATVIA", "CROATIA", "CAPE VERDE", "SUDAN", "COSTA RICA", "CHILE", "NAMIBIA",
+    "TAIWAN", "SERBIA", "LESOTHO", "GEORGIA", "PHILIPPINES", "IVORY COAST", "MADAGASCAR",
+    "DJIBOUTI", "CYPRUS", "ARGENTINA", "URUGUAY", "MOROCCO", "THAILAND", "BERMUDA", "ESTONIA",
+    "BOTSWANA", "VIETNAM", "GUINEA", "MACEDONIA", "HAITI", "LIBERIA", "SAUDI ARABIA", "BOSNIA",
+    "BULGARIA", "PERU", "BANGLADESH", "JAMAICA", "SOMALIA"
 ])
 
 # Selectbox for age group
@@ -58,7 +58,7 @@ main_activity = my_form.selectbox("What is the main activity you want to do in K
     "Wildlife tourism", "Cultural tourism", "Mountain climbing", "Beach tourism", 
     "Conference tourism", "Hunting tourism",
 
- "Bird watching", "Business", 
+    "Bird watching", "Business", 
     "Diving and Sport Fishing"
 ])
 
@@ -68,8 +68,8 @@ tour_arrangement = my_form.selectbox("How do you arrange your tour?", ["Independ
 # Selectbox for package_transport_int
 package_transport_int = my_form.selectbox("Does the package tour include International Transportation?", [0, 1], format_func=func)
 
-# Selectbox for package_accomodation
-package_accomodation = my_form.selectbox("Does the package tour include Accommodation service?", [0, 1], format_func=func)
+# Selectbox for package_accommodation
+package_accommodation = my_form.selectbox("Does the package tour include Accommodation service?", [0, 1], format_func=func)
 
 # Selectbox for package_food
 package_food = my_form.selectbox("Does the package tour include Food service?", [0, 1], format_func=func)
@@ -108,8 +108,8 @@ if submit:
     input_data = {
         "country": country, "age_group": age_group, "travel_with": travel_with,
         "total_number": total_number, "purpose": purpose, "main_activity": main_activity,
-        "tour_arrangement": tour_arrangement, "package_transport_int": package_accomodation,
-        "package_accomodation": package_accomodation, "package_food": package_food,
+        "tour_arrangement": tour_arrangement, "package_transport_int": package_accommodation,
+        "package_accommodation": package_accommodation, "package_food": package_food,
         "package_transport_int": package_transport_int, "package_sightseeing": package_sightseeing,
         "package_guided_tour": package_guided_tour, "package_insurance": package_insurance,
         "nights_stayed": nights_stayed, "payment_mode": payment_mode,
