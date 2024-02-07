@@ -1,7 +1,8 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
-import os 
+import os
 import pickle
 
 # Header
@@ -99,27 +100,18 @@ nights_stayed = my_form.number_input("How many days do you plan to spend in Keny
 # Form submit button
 submit = my_form.form_submit_button(label="Make Prediction")
 
-# Load the model and one-hot-encoder and scaler
-#import pickle
-#from os.path import dirname, join, realpath
-
-
-
-# Define the absolute path to the file
-absolute_path = "V:\\my project\\kenya_tourism_data.pkl"  # Use forward slashes for Windows paths
+# Load the model
+absolute_path = "V:\\my project\\kenya_tourism_data.pkl"  # Absolute path to the pickled file
 
 # Check if the file exists
 if os.path.exists(absolute_path):
-    # Open the file and unpickle the data
-    with open(absolute_path, "rb") as f:
+    # Open the file and unpickle the model
+    with open
+
+(absolute_path, "rb") as f:
         model = pickle.load(f)
-        #print("Data unpickled successfully.")
-        # Use the unpickled data as needed
-       # print(data)
 else:
-    print("File not found:", absolute_path)
-
-
+    st.error("Model file not found at the specified location.")
 
 # If form submitted
 if submit:
@@ -135,34 +127,11 @@ if submit:
         "first_trip_kenya": first_trip_kenya
     }
     # Create a DataFrame from the input data
-  # import streamlit as st
-#import pandas as pd
-#import pickle
-
-# Load the trained XGBoost model
-#with open('xgboost_model.pkl', 'rb') as f:
-  #  model = pickle.load(f)
-
-# Function to perform prediction
-def predict_total_cost(input_data):
-    # Create a DataFrame with the input data
     data = pd.DataFrame(input_data, index=[0])
+    
     # Perform prediction
     prediction = model.predict(data)
-    return prediction
-
-# Example usage
-input_data = {
-    'total_female': 3,
-    'total_male': 2,
-    'nights_spent': 4,
-    'travel_with': 'Family',
-    'most_impressing': 'Wildlife'
-}
-
-# Perform prediction
-prediction = predict_total_cost(input_data)
-
-# Display results of the Tourism prediction
-st.header("Results")
-st.write(" You are expected to spend: {}".format(prediction))
+    
+    # Display result
+    st.header("Results")
+    st.write("You are expected to spend: ${:.2f}".format(prediction[0]))
